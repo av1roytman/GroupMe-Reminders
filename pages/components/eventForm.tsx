@@ -1,17 +1,18 @@
 import React, { useState, Dispatch, SetStateAction } from 'react';
 import { Schema } from '../../amplify/data/resource';
+import styles from '../../styles/Home.module.css'
 
 interface EventFormProps {
     client: any;
     setReminders: Dispatch<SetStateAction<Schema['Reminder'][]>>;
 }
 
-export const EventForm = ({ client, setReminders }: EventFormProps) => {
+const EventForm = ({ client, setReminders }: EventFormProps) => {
   const [eventName, setEventName] = useState<string>('');
   const [eventDate, setEventDate] = useState<string>('');
 
   return (
-    <>
+    <div className={styles['event-form']}>
       <input 
         type="text" 
         value={eventName} 
@@ -37,6 +38,8 @@ export const EventForm = ({ client, setReminders }: EventFormProps) => {
       >
         Create
       </button>
-    </>
+    </div>
   );
 }
+
+export default EventForm;

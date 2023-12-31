@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { generateClient } from 'aws-amplify/data';
 import { Schema } from '../amplify/data/resource';
 import RemindersList from './components/remindersList';
-import { EventForm } from './components/eventForm';
+import EventForm from './components/eventForm';
 
 // generate your data client using the Schema from your backend
 const client = generateClient<Schema>();
@@ -27,7 +27,11 @@ export default function HomePage() {
   useEffect(() => {
     const sub = client.models.Reminder.observeQuery().subscribe(({ items }) => {
       if (Array.isArray(items)) {
-        setReminders([...items]); // Use spread syntax to create a new array
+        setReminders([...items].sort((a, b) => {
+          const dateA = a.eventDate ? new Date(a.eventDate).getTime() : 0;
+          const dateB = b.eventDate ? new Date(b.eventDate).getTime() : 0;
+          return dateA - dateB;
+        })); // Use spread syntax to create a new array
       }
     });
 

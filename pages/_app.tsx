@@ -3,6 +3,7 @@ import { withAuthenticator } from '@aws-amplify/ui-react';
 import { Amplify } from 'aws-amplify';
 import config from '../amplifyconfiguration.json';
 import '../styles/globals.css'
+import '../styles/Home.module.css'
 import '@aws-amplify/ui-react/styles.css';
 
 import type { AppProps } from 'next/app';
