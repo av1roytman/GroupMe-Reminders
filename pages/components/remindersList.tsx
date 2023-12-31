@@ -23,7 +23,11 @@ const RemindersList: React.FC<RemindersListProps> = ({ reminders, deleteReminder
                                         : 'Date not set'}
                                 </span>
                             </div>
-                            <button onClick={() => deleteReminder(reminder)}>Delete</button>
+                            <button 
+                                onClick={() => deleteReminder(reminder)}
+                            >
+                                Delete
+                            </button>
                         </li>
                     ))}
                 </ul>

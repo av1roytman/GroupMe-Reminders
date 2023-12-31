@@ -13,7 +13,11 @@ const schema = a.schema({
       eventName: a.string(),
       eventDate: a.string(),
     })
-    .authorization([a.allow.owner()]),
+    .authorization([
+      a.allow.owner(),
+      a.allow.specificGroups(['Admin']),
+      a.allow.private().to(['read'])
+    ]),
 });
 
 export type Schema = ClientSchema<typeof schema>;

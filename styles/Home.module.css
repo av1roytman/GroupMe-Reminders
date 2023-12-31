@@ -45,6 +45,11 @@
   cursor: pointer;
 }
 
+.reminder-item button:disabled {
+  background-color: grey;
+  cursor: not-allowed;
+}
+
 .event-form {
   display: flex;
   flex-direction: column;
