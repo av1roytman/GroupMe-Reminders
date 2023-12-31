@@ -2,46 +2,42 @@
 import { useState, useEffect } from 'react';
 import { generateClient } from 'aws-amplify/data';
 import { Schema } from '../amplify/data/resource';
+import RemindersList from './components/remindersList';
+import { EventForm } from './components/eventForm';
 
 // generate your data client using the Schema from your backend
 const client = generateClient<Schema>();
 
 export default function HomePage() {
-  const [todos, setTodos] = useState<Schema['Todo'][]>([]);
+  const [reminders, setReminders] = useState<Schema['Reminder'][]>([]);
 
-  async function listTodos() {
-    // fetch all todos
-    const { data } = await client.models.Todo.list();
-    setTodos(data);
+  const deleteReminder = async (reminder: Schema['Reminder']) => {
+    const { errors } = await client.models.Reminder.delete(reminder);
+    if (!errors) {
+      setReminders(prevReminders => prevReminders.filter(r => r.id !== reminder.id));
+    }
+  };
+
+  async function listReminders() {
+    // fetch all reminders
+    const { data } = await client.models.Reminder.list();
+    setReminders(data);
   }
 
   useEffect(() => {
-    const sub = client.models.Todo.observeQuery().subscribe(({ items }) =>
-      setTodos([...items])
-    );
+    const sub = client.models.Reminder.observeQuery().subscribe(({ items }) => {
+      if (Array.isArray(items)) {
+        setReminders([...items]); // Use spread syntax to create a new array
+      }
+    });
 
     return () => sub.unsubscribe();
   }, []);
 
   return (
     <main>
-      <h1>Hello, Amplify 👋</h1>
-      <button onClick={async () => {
-        // create a new Todo with the following attributes
-        const { errors, data: newTodo } = await client.models.Todo.create({
-          // prompt the user to enter the title
-          content: window.prompt("title"),
-          done: false,
-          priority: 'medium'
-        })
-        console.log(errors, newTodo);
-      }}>Create </button>
-
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo.id}>{todo.content}</li>
-        ))}
-      </ul>
+      <EventForm client={client} setReminders={setReminders}/>      
+      <RemindersList reminders={reminders} deleteReminder={deleteReminder}/>
     </main>
   );
 }
