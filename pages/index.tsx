@@ -14,7 +14,7 @@ export default function HomePage() {
   const deleteReminder = async (reminder: Schema['Reminder']) => {
     const { errors } = await client.models.Reminder.delete(reminder);
     if (!errors) {
-      setReminders(prevReminders => prevReminders.filter(r => r.id !== reminder.id));
+      setReminders(prevReminders => prevReminders.filter(prev => prev.id !== reminder.id));
     }
   };
 
