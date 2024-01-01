@@ -74,3 +74,8 @@
   margin: 4px 2px;
   cursor: pointer;
 }
+
+.event-form button:disabled {
+  background-color: grey;
+  cursor: not-allowed;
+}
